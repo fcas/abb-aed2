@@ -44,15 +44,15 @@ public class ABB {
 		}
 	}
 
-	public Node Busca(int numero) {
+	public Node busca(int numero) {
 		Node aux = null;
 		if (!this.isTerminal()) {
 			if (numero == node.getNumero()) {
 				aux = node;
 			} else if (numero < node.getNumero()) {
-				aux = esquerda.Busca(numero);
+				aux = esquerda.busca(numero);
 			} else {
-				aux = direita.Busca(numero);
+				aux = direita.busca(numero);
 			}
 		}
 		return aux;
