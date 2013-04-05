@@ -30,30 +30,29 @@ public class ABB {
 		return esquerda;
 	}
 
-	public void insert(Node node) {
+	public void inserir(Node node) {
 		if (this.isTerminal()) {
 			this.node = node;
 			this.esquerda = new ABB();
 			this.direita = new ABB();
 		} else if (node.getNumero() < this.node.getNumero()) {
-			esquerda.insert(node);
+			esquerda.inserir(node);
 		} else if (node.getNumero() > this.node.getNumero()) {
-			direita.insert(node);
+			direita.inserir(node);
 		} else {
-			// TODO implementar rotina para o caso do Node já está na Árvore
+			System.out.println("O no ja existe");
 		}
-
 	}
 
-	public Node search(int numero) {
+	public Node Busca(int numero) {
 		Node aux = null;
 		if (!this.isTerminal()) {
 			if (numero == node.getNumero()) {
 				aux = node;
 			} else if (numero < node.getNumero()) {
-				aux = esquerda.search(numero);
+				aux = esquerda.Busca(numero);
 			} else {
-				aux = direita.search(numero);
+				aux = direita.Busca(numero);
 			}
 		}
 		return aux;
@@ -100,6 +99,32 @@ public class ABB {
 			menor = menor.esquerda;
 		}
 		return menor;
+	}
+
+	private ABB buscaMaior() {
+		ABB maior = this;
+		while (!maior.direita.isTerminal()) {
+			maior = maior.esquerda;
+		}
+		return maior;
+	}
+
+	public void visitarEmOrdem(Node node) {
+		visitarEmOrdem(esquerda.getNode());
+		System.out.println(node.getNumero());
+		visitarEmOrdem(direita.getNode());
+	}
+
+	public void visitarPreOrdem(Node node) {
+		System.out.println(node.getNumero());
+		visitarPreOrdem(esquerda.getNode());
+		visitarPreOrdem(direita.getNode());
+	}
+
+	public void visitarPosOrdem(Node node) {
+		visitarPosOrdem(esquerda.getNode());
+		visitarPosOrdem(direita.getNode());
+		System.out.println(node.getNumero());
 	}
 
 }
