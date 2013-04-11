@@ -6,11 +6,8 @@ public class No {
 	private No esquerda;
 	private No direita;
 	
-	//acesso a leitura e escrita; 
-	// this refere-se a especificação de uma variável;
-	
 	public No(int i){
-		numero = 0;
+		numero = i;
 		esquerda = null;
 		direita = null;
 	}
@@ -38,6 +35,4 @@ public class No {
 	public void setDireita(No direita) {
 		this.direita = direita;
 	}
-	
-	
 }
