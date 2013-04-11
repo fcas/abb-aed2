@@ -157,24 +157,22 @@ public class ABB {
 	
 
 	public void visitarEmOrdem(No node) {
-		visitarEmOrdem(esquerda.getNode());
+		visitarEmOrdem(node.getEsquerda());
 		System.out.println(node.getNumero());
-		visitarEmOrdem(direita.getNode());
+		visitarEmOrdem(node.getDireita());
 	}
 
 	public void visitarPreOrdem(No node) {
 		System.out.println(node.getNumero());
-		visitarPreOrdem(esquerda.getNode());
-		visitarPreOrdem(direita.getNode());
+		visitarPreOrdem(node.getEsquerda());
+		visitarPreOrdem(node.getDireita());
 	}
 
 	public void visitarPosOrdem(No node) {
-		visitarPosOrdem(esquerda.getNode());
-		visitarPosOrdem(direita.getNode());
+		visitarPosOrdem(node.getEsquerda());
+		visitarPosOrdem(node.getDireita());
 		System.out.println(node.getNumero());
 	}
-	
-	
 	
 	//TODO
 	public No predecessor(No n){
@@ -188,7 +186,7 @@ public class ABB {
 	
 	//TODO
 	void print(){
-		
+		visitarEmOrdem(raiz);
 	}
 	
 	//TODO
