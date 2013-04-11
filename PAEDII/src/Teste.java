@@ -1,22 +1,10 @@
-import exceptions.NoInvalidoException;
-import exceptions.NoJaExisteException;
-
-
-
-
 public class Teste {
 
-	/**
-	 * @param static para especificar que não há amarração com objetos
-	 * @throws NoInvalidoException 
-	 * @throws NoJaExisteException 
-	 */
-	
-
-	public static void main(String[] args) throws NoJaExisteException, NoInvalidoException {
-		
+	public static void main(String[] args) {
 		ABB abb = new ABB();
-		
+		abb.inserir(4);
+		abb.inserir(5);
+		abb.print();
 	}
 
 }

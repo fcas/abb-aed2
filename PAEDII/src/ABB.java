@@ -3,7 +3,7 @@ import exceptions.NoJaExisteException;
 
 public class ABB {
 	
-	private No raiz;
+	public No raiz;
 	
 	/**Construtor**/
 	public ABB() {
@@ -38,8 +38,23 @@ public class ABB {
 		return aux;
 	}
 
-	/****/
-	public void inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
+	/**Insere um no na arvore**/
+	public void inserir (int numero){
+		if (this.raiz == null){
+			raiz = new No(numero);
+		}
+		else{
+			try{
+				inserir (raiz, numero);
+			}catch (NoJaExisteException e){
+				System.out.println("nó já existe");
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
 		if (no != null){
 			//Se o valor a ser inserido for menor que o no atual
 			if (numero < no.getNumero()){ 
@@ -70,10 +85,13 @@ public class ABB {
 				throw new NoJaExisteException();
 			}
 		}else{
-			throw new NoInvalidoException();
+			System.out.println("colocando "+ numero + " na raiz");
+			no = new No(numero);
+			System.out.println(raiz.getNumero());
 		}
 	}
 
+	/**Encontra o menor no da subarvore**/
 	public No Min (No no) {
 		if (no != null){
 			if (no.getEsquerda() != null){
@@ -86,6 +104,7 @@ public class ABB {
 		}
 	}
 
+	/**Encontra o maior no da subarvore**/
 	public No Max(No no) {
 		if (no != null){
 			if (no.getDireita() != null){
@@ -98,6 +117,7 @@ public class ABB {
 		}
 	}
 	
+	/**Tenta remover o no indicado da arvore e retorna o sucesso da operacao**/
 	public boolean remove(int numero, No no) throws NoInvalidoException{
 		No aux = no;
 		boolean ok = true;
@@ -132,8 +152,8 @@ public class ABB {
 		}
 		return ok;
 	}
-	
-	public No Pai(No busca, No no){
+
+	private No Pai(No busca, No no){
 		if (busca.getNumero() < no.getNumero()){
 			if (no.getEsquerda().getNumero() != busca.getNumero()){
 				return Pai(busca, no.getEsquerda());
@@ -150,24 +170,29 @@ public class ABB {
 			return null;
 		}
 	}
-	
-	private No AchaPai (No busca){
+
+	/**Retorna o pai do no indicado**/
+	public No AchaPai (No busca){
 		return Pai(busca, raiz);
 	}
-	
 
+	/**Imprime os nos da Arvore percorrendo em ordem**/
 	public void visitarEmOrdem(No node) {
-		visitarEmOrdem(node.getEsquerda());
-		System.out.println(node.getNumero());
-		visitarEmOrdem(node.getDireita());
+		if (node != null){
+			visitarEmOrdem(node.getEsquerda());
+			System.out.println(node.getNumero());
+			visitarEmOrdem(node.getDireita());
+		}
 	}
 
+	/**Imprime os nos da Arvore percorrendo em pre-ordem**/
 	public void visitarPreOrdem(No node) {
 		System.out.println(node.getNumero());
 		visitarPreOrdem(node.getEsquerda());
 		visitarPreOrdem(node.getDireita());
 	}
 
+	/**Imprime os nos da Arvore percorrendo em pos-ordem**/
 	public void visitarPosOrdem(No node) {
 		visitarPosOrdem(node.getEsquerda());
 		visitarPosOrdem(node.getDireita());
