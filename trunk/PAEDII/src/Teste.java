@@ -9,7 +9,7 @@ public class Teste {
 	
 
 	public static void main(String[] args) {
-		Node variavel = new Node(1); 
+		No variavel = new No(1); 
 		variavel.numero = 10;
 	}
 
