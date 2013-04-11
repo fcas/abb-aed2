@@ -38,6 +38,7 @@ public class ABB {
 		return aux;
 	}
 
+	/****/
 	public void inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
 		if (no != null){
 			//Se o valor a ser inserido for menor que o no atual
@@ -114,19 +115,22 @@ public class ABB {
 				if(no.getEsquerda() != null && no.getDireita() != null) { //tem os dois filhos
 					aux = Min(no.getDireita());
 					no.setNumero(aux.getNumero());
-					remove(aux.getNumero(), no.getDireita());
+					ok = remove(aux.getNumero(), no.getDireita());
 				}else{ //no tem um ou nenhum filho
-					aux = no;
+					aux = no; //guarda apontador do no modificado
 					if (aux.getEsquerda() != null){
-						No aux2 = Pai(aux, raiz);
-						
+						No pai = AchaPai(aux);
+						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
+					} else if (aux.getDireita() != null){
+						No pai = AchaPai(aux);
+						pai.setDireita(aux.getDireita()); //pai aponta pro neto
 					}
-					
 				}
 			}
 		}else{
 			ok = false;
 		}
+		return ok;
 	}
 	
 	public No Pai(No busca, No no){
@@ -146,7 +150,6 @@ public class ABB {
 			return null;
 		}
 	}
-	
 	
 	private No AchaPai (No busca){
 		return Pai(busca, raiz);
