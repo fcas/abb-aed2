@@ -49,6 +49,7 @@ public class ABB {
 	public void inserir (int numero){
 		if (this.raiz == null){ //se a raiz eh nula. Insere na raiz
 			raiz = new No(numero);
+			raiz.setPai(raiz);
 		}
 		else{ //se a raiz nao eh nula, procura o no na arvore
 			try{
@@ -61,37 +62,35 @@ public class ABB {
 		}
 	}
 	private void inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
-		if (no != null){
-			//Se o valor a ser inserido for menor que o no atual
-			if (numero < no.getNumero()){ 
-				
-				//Se ha subarvore esquerda, continua a busca
-				if (no.getEsquerda() != null){
-					inserir(no.getEsquerda(), numero);
-				}
-				//Se nao houver subarvore esquerda, insere
-				else { 
-					no.setEsquerda(new No(numero));
-				}
+		//Se o valor a ser inserido for menor que o no atual
+		if (numero < no.getNumero()){ 
+			
+			//Se ha subarvore esquerda, continua a busca
+			if (no.getEsquerda() != null){
+				inserir(no.getEsquerda(), numero);
 			}
-			//Se o valor a ser inserido for maior que o no atual
-			else if(numero > no.getNumero()){
-				
-				//Se ha subarvore direita, continua a busca
-				if (no.getDireita() != null){
-					inserir(no.getDireita(), numero);
-				}
-				//Se nao houver subarvore direita, insere
-				else {
-					no.setDireita(new No (numero));
-				}
+			//Se nao houver subarvore esquerda, insere
+			else { 
+				no.setEsquerda(new No(numero));
+				no.getEsquerda().setPai(no);
 			}
-			//Se o valor a ser inserido for igual ao no atual
-			else{
-				throw new NoJaExisteException();
+		}
+		//Se o valor a ser inserido for maior que o no atual
+		else if(numero > no.getNumero()){
+			
+			//Se ha subarvore direita, continua a busca
+			if (no.getDireita() != null){
+				inserir(no.getDireita(), numero);
 			}
-		}else{
-			no = new No(numero);
+			//Se nao houver subarvore direita, insere
+			else {
+				no.setDireita(new No (numero));
+				no.getDireita().setPai(no);
+			}
+		}
+		//Se o valor a ser inserido for igual ao no atual
+		else{
+			throw new NoJaExisteException();
 		}
 	}
 	
@@ -148,14 +147,25 @@ public class ABB {
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
 					ok = remove(aux.getNumero(), no.getDireita());
+					System.out.println("ok ");
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
-					if (aux.getEsquerda() != null){ //se só tem filho na esquerda
-						No pai = AchaPai(aux);
+					
+					if (aux.getEsquerda() != null){ //se sï¿½ tem filho na esquerda
+						No pai = aux.Pai();
 						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
-					} else { //se só tem filho na direita ou não tem filho
-						No pai = AchaPai(aux);
-						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o nó vazio à direita
+						pai.getEsquerda().setPai(pai);
+					} else if (aux.getDireita()!=null) { //se sï¿½ tem filho na direita ou nï¿½o tem filho
+						System.out.println("entrei");
+						No pai = aux.Pai();
+						System.out.println("pai = " + pai.getNumero());
+						System.out.println("pai = " + pai.getDireita().getNumero());
+						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o nï¿½ vazio ï¿½ direita
+						System.out.println("paiD = " + pai.getDireita().getNumero());
+						pai.getDireita().setPai(pai);
+					} else {
+						No pai = aux.Pai();
+						pai.setDireita(aux.getDireita());
 					}
 				}
 			}
@@ -163,29 +173,6 @@ public class ABB {
 			ok = false;
 		}
 		return ok;
-	}
-	
-	/**Retorna o pai do no indicado**/
-	public No AchaPai (No busca){
-		return Pai(busca, raiz);
-	}
-	
-	private No Pai(No busca, No no){
-		if (busca.getNumero() < no.getNumero()){
-			if (no.getEsquerda().getNumero() != busca.getNumero()){
-				return Pai(busca, no.getEsquerda());
-			}else{
-				return no;
-			}
-		} else if (busca.getNumero() > no.getNumero()){
-			if (no.getDireita().getNumero() != busca.getNumero()){
-				return Pai (busca, no.getDireita());
-			}else {
-				return no;
-			}
-		} else{
-			return null;
-		}
 	}
 	
 	/**Imprime os nos da Arvore percorrendo em ordem**/
