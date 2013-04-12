@@ -1,5 +1,7 @@
 import exceptions.NoInvalidoException;
 import exceptions.NoJaExisteException;
+import exceptions.PredecessorNotFoundException;
+import exceptions.SuccessorNotFoundException;
 
 public class ABB {
 	
@@ -147,23 +149,18 @@ public class ABB {
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
 					ok = remove(aux.getNumero(), no.getDireita());
-					System.out.println("ok ");
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
 					
-					if (aux.getEsquerda() != null){ //se sï¿½ tem filho na esquerda
+					if (aux.getEsquerda() != null){ //se so tem filho na esquerda
 						No pai = aux.Pai();
 						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
-						pai.getEsquerda().setPai(pai);
-					} else if (aux.getDireita()!=null) { //se sï¿½ tem filho na direita ou nï¿½o tem filho
-						System.out.println("entrei");
+						pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
+					} else if (aux.getDireita()!=null) { //se so tem filho na direita
 						No pai = aux.Pai();
-						System.out.println("pai = " + pai.getNumero());
-						System.out.println("pai = " + pai.getDireita().getNumero());
-						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o nï¿½ vazio ï¿½ direita
-						System.out.println("paiD = " + pai.getDireita().getNumero());
-						pai.getDireita().setPai(pai);
-					} else {
+						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
+						pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
+					} else { //se nao tem filhos
 						No pai = aux.Pai();
 						pai.setDireita(aux.getDireita());
 					}
@@ -211,19 +208,98 @@ public class ABB {
 		}
 	}
 	
-	//TODO
-	public No predecessor(No n){
-		return null;
+	/**
+	 * 
+	 * @param chave
+	 * @return O maior no que seja menor que o no buscado
+	 * @throws PredecessorNotFoundException
+	 */
+	public No predecessor(int chave) throws PredecessorNotFoundException{
+		No n = busca(chave);
+		if (n.getEsquerda() != null){ // se tem filho esquerdo retorna o max da subarvore esquerda.
+			return max(n.getEsquerda()); 
+		}else{ //se não tem filho esquerdo, retorna o primeiro antecessor cuja subarvore direita contenha n
+			No pai = n.Pai();
+			No aux = n;
+			while (pai.getDireita() != aux){
+				aux = pai;
+				pai = pai.Pai();
+				if (pai.getNumero() == aux.getNumero()){
+					throw new PredecessorNotFoundException();
+				}
+			}
+			return pai;
+		}
 	}
 	
-	//TODO
-	public No sucessor(No n){
-		return null;
+	/**
+	 * 
+	 * @param chave
+	 * @return O menor no que seja maior que o no buscado
+	 * @throws PredecessorNotFoundException
+	 */
+	public No sucessor(int chave) throws SuccessorNotFoundException{
+		No n = busca(chave);
+		if (n.getDireita() != null){ // se tem filho direito retorna o min da subarvore direita.
+			return min(n.getDireita()); 
+		}else{ //se não tem filho direito, retorna o primeiro antecessor cuja subarvore esquerda contenha n
+			No pai = n.Pai();
+			No aux = n;
+			while (pai.getEsquerda() != aux){
+				aux = pai;
+				pai = pai.Pai();
+				if (pai.getNumero() == aux.getNumero()){
+					throw new SuccessorNotFoundException();
+				}
+			}
+			return pai;
+		}
 	}
 	
-	//TODO
-	boolean arvoreBinariaBuscaValida(){
-		return false;
+	/**
+	 * 
+	 * @return verdadeiro se a arvore for binaria de busca ou falso se nao for
+	 */
+	public boolean arvoreBinariaBuscaValida(){
+		return verificaNo(raiz);
 	}
+	
+	private boolean verificaNo(No no){
+		/*
+		 * caso 1 no externo
+		 * caso 2 folha
+		 * caso 3 dois filhos
+		 * caso 4 só filho esquerdo
+		 * caso 5 so filho direito
+		 */
+		if (no != null){ //caso 1
+			if (no.getEsquerda() == null && no.getDireita() == null){ //caso 2
+				return true;
+			}else {
+				if (no.getEsquerda() != null && no.getDireita() != null){ //caso 3
+					if (no.getEsquerda().getNumero() < no.getNumero() && no.getDireita().getNumero() > no.getNumero()){ //os dois filhos obedecem a regra
+						return (verificaNo(no.getEsquerda()) &&  verificaNo(no.getDireita()));
+					} else { // tem os dois filhos mas um dos dois ou ambos, desobedecem a regra
+						return false;
+					}
+				} else if (no.getEsquerda() != null){ //caso 4
+					if (no.getEsquerda().getNumero() < no.getNumero()){ //se o esquerdo obedece a regra
+						return verificaNo(no.getEsquerda());
+					}else{ //se o esquerdo desobedece
+						return false;
+					}
+				} else { // caso 5
+					if (no.getDireita().getNumero() > no.getNumero()){ //se o direito obedece a regra
+						return verificaNo(no.getDireita());
+					}else {//se o direito desobedece
+						return false;
+					}
+				}
+			}
+		}else{
+			return true;
+		}
+	}
+	
 
 }
