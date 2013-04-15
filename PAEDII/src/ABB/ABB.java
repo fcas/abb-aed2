@@ -1,3 +1,4 @@
+package ABB;
 import exceptions.NoInvalidoException;
 import exceptions.NoJaExisteException;
 import exceptions.PredecessorNotFoundException;
@@ -173,7 +174,7 @@ public class ABB {
 	}
 	
 	/**Imprime os nos da Arvore percorrendo em ordem**/
-	void print(){
+	public void print(){
 		visitarEmOrdem(raiz);
 	}
 	private void visitarEmOrdem(No node) {
@@ -185,7 +186,7 @@ public class ABB {
 	}
 	
 	/**Imprime os nos da Arvore percorrendo em pos-ordem**/
-	void printPos(){
+	public void printPos(){
 		visitarPosOrdem(raiz);
 	}
 	private void visitarPosOrdem(No node) {
@@ -197,7 +198,7 @@ public class ABB {
 	}
 	
 	/**Imprime os nos da Arvore percorrendo em pre-ordem**/
-	void printPre(){
+	public void printPre(){
 		visitarPreOrdem(raiz);
 	}
 	private void visitarPreOrdem(No node) {

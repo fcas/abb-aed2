@@ -1,3 +1,4 @@
+package ABB;
 import java.util.Scanner;
 
 
@@ -5,7 +6,6 @@ public class Menu {
 
 	private ABB abb;
 	private int option;
-	private int aux;
 	Scanner in = new Scanner(System.in);
 	
 	public Menu() {
@@ -13,6 +13,7 @@ public class Menu {
 	}
 	
 	public void mainMenu(){
+		System.out.println("\n------------------------\n");
 		System.out.println("Arvore Binaria de Busca:");
 		System.out.println("0- Sair");
 		System.out.println("1- Inserir");
@@ -21,11 +22,11 @@ public class Menu {
 		System.out.println("4- Imprimir Percurso Pre Ordem");
 		System.out.println("5- Imprimir Percurso Pos Ordem");
 		System.out.println("6- Buscar No");
-		System.out.println("7- Procurar Sucessor (AINDA NAO IMPLEMENTADO)");
-		System.out.println("8- Procurar Predecessor (AINDA NAO IMPLEMENTADO)");
+		System.out.println("7- Procurar Sucessor");
+		System.out.println("8- Procurar Predecessor");
 		System.out.println("9- Buscar No Maximo");
 		System.out.println("10- Buscar No Minimo");
-		System.out.println("- Verificar se Arvore é ABB (AINDA NAO IMPLEMENTADO)");
+		System.out.println("11- Verificar se Arvore é ABB");
 		
 	}
 	
@@ -56,6 +57,8 @@ public class Menu {
 						break;
 				case 10: min();
 						break;
+				case 11: validacao();
+						break;
 				case 0: in.close();
 						System.out.println("Ate logo!");
 						return;
@@ -67,6 +70,10 @@ public class Menu {
 		}while (option != 0);
 	}
 	
+	private void validacao() {
+		System.out.println("Arvore Binaria de Busca Valida: " + abb.arvoreBinariaBuscaValida());
+	}
+
 	private void min() {
 		No result = abb.min(abb.getRaiz());
 		System.out.println("O menor no da arvore e: " + result.getNumero());
