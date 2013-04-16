@@ -89,4 +89,46 @@ public class ARN extends ABB {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/*Imprime os nos da Arvore percorrendo em ordem*/
+	public void print(){
+		visitarEmOrdem(getRaiz());
+	}
+	
+	private void visitarEmOrdem(NoARN node) {
+		if (node != null){
+			this.visitarEmOrdem(node.getEsquerda());
+			System.out.println(node.getNumero());
+			System.out.println(node.getCor().name());
+			visitarEmOrdem(node.getDireita());
+		}
+	}
+	
+	/**Imprime os nos da Arvore percorrendo em pos-ordem**/
+	public void printPos(){
+		visitarPosOrdem(getRaiz());
+	}
+	
+	private void visitarPosOrdem(NoARN node) {
+		if (node != null){
+			visitarPosOrdem(node.getEsquerda());
+			visitarPosOrdem(node.getDireita());
+			System.out.println(node.getNumero());
+			System.out.println(node.getCor().name());
+		}
+	}
+	
+	/**Imprime os nos da Arvore percorrendo em pre-ordem**/
+	public void printPre(){
+		visitarPreOrdem(getRaiz());
+	}
+	
+	private void visitarPreOrdem(NoARN node) {
+		if (node != null){
+			System.out.println(node.getNumero());
+			System.out.println(node.getCor().name());
+			visitarPreOrdem(node.getEsquerda());
+			visitarPreOrdem(node.getDireita());
+		}
+	}
 }
