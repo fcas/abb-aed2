@@ -21,5 +21,16 @@ public class NoARN extends No {
 		this.cor = cor;
 	}
 	
-
+	public No avo(No no) {
+		return  no.Pai().Pai();
+	}
+	
+	public No tioEsquerda (No no) {
+		return no.Pai().Pai().getEsquerda();
+	}
+	
+	public No tioDireita (No no){ 
+		return no.Pai().Pai().getDireita();
+	}
+	
 }

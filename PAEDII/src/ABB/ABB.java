@@ -48,34 +48,38 @@ public class ABB {
 		return aux;
 	}
 
-	/**Insere um no na arvore**/
-	public void inserir (int numero){
+	/**Insere um no na arvore
+	 * @throws NoJaExisteException **/
+	public No inserir (int numero) throws NoJaExisteException{
 		if (this.raiz == null){ //se a raiz eh nula. Insere na raiz
 			raiz = new No(numero);
 			raiz.setPai(raiz);
+			return raiz;
 		}
 		else{ //se a raiz nao eh nula, procura o no na arvore
 			try{
-				inserir (raiz, numero);
+				return inserir (raiz, numero);
 			}catch (NoJaExisteException e){
-				System.out.println("no ja existe");
+				throw new NoJaExisteException();
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
+		return raiz;
 	}
-	private void inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
+	private No inserir(No no, int numero) throws NoJaExisteException, NoInvalidoException {
 		//Se o valor a ser inserido for menor que o no atual
 		if (numero < no.getNumero()){ 
 			
 			//Se ha subarvore esquerda, continua a busca
 			if (no.getEsquerda() != null){
-				inserir(no.getEsquerda(), numero);
+				return inserir(no.getEsquerda(), numero);
 			}
 			//Se nao houver subarvore esquerda, insere
 			else { 
 				no.setEsquerda(new No(numero));
 				no.getEsquerda().setPai(no);
+				return no;
 			}
 		}
 		//Se o valor a ser inserido for maior que o no atual
@@ -83,12 +87,13 @@ public class ABB {
 			
 			//Se ha subarvore direita, continua a busca
 			if (no.getDireita() != null){
-				inserir(no.getDireita(), numero);
+				return inserir(no.getDireita(), numero);
 			}
 			//Se nao houver subarvore direita, insere
 			else {
 				no.setDireita(new No (numero));
 				no.getDireita().setPai(no);
+				return no;
 			}
 		}
 		//Se o valor a ser inserido for igual ao no atual
@@ -219,7 +224,7 @@ public class ABB {
 		No n = busca(chave);
 		if (n.getEsquerda() != null){ // se tem filho esquerdo retorna o max da subarvore esquerda.
 			return max(n.getEsquerda()); 
-		}else{ //se não tem filho esquerdo, retorna o primeiro antecessor cuja subarvore direita contenha n
+		}else{ //se nï¿½o tem filho esquerdo, retorna o primeiro antecessor cuja subarvore direita contenha n
 			No pai = n.Pai();
 			No aux = n;
 			while (pai.getDireita() != aux){
@@ -243,7 +248,7 @@ public class ABB {
 		No n = busca(chave);
 		if (n.getDireita() != null){ // se tem filho direito retorna o min da subarvore direita.
 			return min(n.getDireita()); 
-		}else{ //se não tem filho direito, retorna o primeiro antecessor cuja subarvore esquerda contenha n
+		}else{ //se nï¿½o tem filho direito, retorna o primeiro antecessor cuja subarvore esquerda contenha n
 			No pai = n.Pai();
 			No aux = n;
 			while (pai.getEsquerda() != aux){
@@ -270,7 +275,7 @@ public class ABB {
 		 * caso 1 no externo
 		 * caso 2 folha
 		 * caso 3 dois filhos
-		 * caso 4 só filho esquerdo
+		 * caso 4 sï¿½ filho esquerdo
 		 * caso 5 so filho direito
 		 */
 		if (no != null){ //caso 1

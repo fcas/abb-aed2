@@ -1,6 +1,8 @@
 package ABB;
 import java.util.Scanner;
 
+import exceptions.NoJaExisteException;
+
 
 public class Menu {
 
@@ -26,11 +28,11 @@ public class Menu {
 		System.out.println("8- Procurar Predecessor");
 		System.out.println("9- Buscar No Maximo");
 		System.out.println("10- Buscar No Minimo");
-		System.out.println("11- Verificar se Arvore é ABB");
+		System.out.println("11- Verificar se Arvore ï¿½ ABB");
 		
 	}
 	
-	public void init(){
+	public void init() throws NoJaExisteException{
 		
 		do{
 			mainMenu();
@@ -90,7 +92,7 @@ public class Menu {
 		numero = in.nextInt();
 		
 		No result = abb.busca(numero);
-		System.out.println("O predecessor de "+ numero + " é " + result.getNumero());
+		System.out.println("O predecessor de "+ numero + " ï¿½ " + result.getNumero());
 	}
 
 	private void sucessor() {
@@ -99,7 +101,7 @@ public class Menu {
 		numero = in.nextInt();
 		
 		No result = abb.busca(numero);
-		System.out.println("O sucessor de "+ numero + " é " + result.getNumero());
+		System.out.println("O sucessor de "+ numero + " ï¿½ " + result.getNumero());
 	}
 
 	private void buscaNo() {
@@ -143,7 +145,7 @@ public class Menu {
 			System.out.println("remocao falhou");
 	}
 
-	private void insercao() {
+	private void insercao() throws NoJaExisteException {
 		int numero;
 		System.out.println("Digite o numero a ser inserido na arvore");
 		numero = in.nextInt();
@@ -151,11 +153,9 @@ public class Menu {
 		abb.inserir(numero);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoJaExisteException {
 		Menu menu = new Menu();
 		menu.init();
-		
-		
 	}
 	
 }
