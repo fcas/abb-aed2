@@ -1,4 +1,5 @@
 package ABB;
+import exceptions.ChaveInvalidaException;
 import exceptions.NoInvalidoException;
 import exceptions.NoJaExisteException;
 import exceptions.PredecessorNotFoundException;
@@ -49,8 +50,12 @@ public class ABB {
 	}
 
 	/**Insere um no na arvore
-	 * @throws NoJaExisteException **/
-	public No inserir (int numero) throws NoJaExisteException{
+	 * @throws NoJaExisteException 
+	 * @throws ChaveInvalidaException **/
+	public No inserir (int numero) throws NoJaExisteException, ChaveInvalidaException{
+		if (numero < 1){
+			throw new ChaveInvalidaException();
+		}
 		if (this.raiz == null){ //se a raiz eh nula. Insere na raiz
 			raiz = new No(numero);
 			raiz.setPai(raiz);
@@ -129,17 +134,17 @@ public class ABB {
 	}
 	
 	/**Tenta remover o no indicado da arvore e retorna o sucesso da operacao**/
-	public boolean remove(int numero){
+	public No remove(int numero){
 		try {
 			return remove(numero, raiz);
 		} catch (NoInvalidoException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
-	public boolean remove(int numero, No no) throws NoInvalidoException{
+	public No remove(int numero, No no) throws NoInvalidoException{
 		No aux = no;
-		boolean ok = true;
+		No ok = null;
 		if (aux != null) {
 			//Se o no a ser removido for menor que o no atual
 			if (numero < no.getNumero()){
@@ -150,43 +155,44 @@ public class ABB {
 				ok = remove(numero, no.getDireita());
 			}
 			//Se o no a ser removido for o atual
-			else{
-				if(no.getEsquerda() != null && no.getDireita() != null) { //tem os dois filhos
+			else if (no.getNumero() == numero){
+				if(no.getEsquerda().getNumero() != -1 && no.getDireita().getNumero() != -1) { //tem os dois filhos
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
 					ok = remove(aux.getNumero(), no.getDireita());
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
 					
-					if (aux.getEsquerda() != null){ //se so tem filho na esquerda
+					if (aux.getEsquerda().getNumero() != -1){ //se so tem filho na esquerda
 						No pai = aux.Pai();
 						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
 						pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
-					} else if (aux.getDireita()!=null) { //se so tem filho na direita
+						ok = pai.getEsquerda();
+					} else { //se so tem um ou nenhum filho
 						No pai = aux.Pai();
 						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
 						pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
-					} else { //se nao tem filhos
-						No pai = aux.Pai();
-						pai.setDireita(aux.getDireita());
+						ok = pai.getDireita();
 					}
 				}
+			} else {
+				ok = null;
 			}
 		}else{
-			ok = false;
+			ok = null;
 		}
 		return ok;
 	}
 	
 	/**Imprime os nos da Arvore percorrendo em ordem**/
 	public void print(){
-		Oi(raiz);
+		visitarEmOrdem(raiz);
 	}
-	private void Oi(No node) {
+	private void visitarEmOrdem(No node) {
 		if (node != null){
-			Oi(node.getEsquerda());
+			visitarEmOrdem(node.getEsquerda());
 			System.out.println(node.getNumero());
-			Oi(node.getDireita());
+			visitarEmOrdem(node.getDireita());
 		}
 	}
 	

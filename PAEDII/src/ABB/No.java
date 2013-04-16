@@ -15,6 +15,10 @@ public class No {
 		pai = null;
 	}
 	
+	public No(){
+		
+	}
+	
 	public int getNumero() {
 		return numero;
 	}

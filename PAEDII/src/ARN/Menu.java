@@ -1,5 +1,7 @@
-package ABB;
+package ARN;
 import java.util.Scanner;
+
+import ABB.No;
 
 import exceptions.ChaveInvalidaException;
 import exceptions.NoJaExisteException;
@@ -9,12 +11,12 @@ import exceptions.SuccessorNotFoundException;
 
 public class Menu {
 
-	private ABB abb;
+	private ARN arn;
 	private int option;
 	Scanner in = new Scanner(System.in);
 	
 	public Menu() {
-		abb = new ABB();
+		arn = new ARN();
 	}
 	
 	public void mainMenu(){
@@ -35,7 +37,7 @@ public class Menu {
 		
 	}
 	
-	public void init() throws NoJaExisteException, SuccessorNotFoundException, PredecessorNotFoundException{
+	public void init() throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException{
 		
 		do{
 			mainMenu();
@@ -62,8 +64,8 @@ public class Menu {
 						break;
 				case 10: min();
 						break;
-				case 11: validacao();
-						break;
+//				case 11: validacao();
+//						break;
 				case 0: in.close();
 						System.out.println("Ate logo!");
 						return;
@@ -75,36 +77,36 @@ public class Menu {
 		}while (option != 0);
 	}
 	
-	private void validacao() {
-		System.out.println("Arvore Binaria de Busca Valida: " + abb.arvoreBinariaBuscaValida());
-	}
+//	private void validacao() {
+//		System.out.println("Arvore Binaria de Busca Valida: " + arn.arvoreBinariaBuscaValida());
+//	}
 
 	private void min() {
-		No result = abb.min(abb.getRaiz());
+		NoARN result = arn.min(arn.getRaiz());
 		System.out.println("O menor no da arvore e: " + result.getNumero());
 	}
 
 	private void max() {
-		No result = abb.max(abb.getRaiz());
+		NoARN result = arn.max(arn.getRaiz());
 		System.out.println("O maior no da arvore e: " + result.getNumero());
 	}
 
-	private void predecessor() throws PredecessorNotFoundException{
+	private void predecessor() throws PredecessorNotFoundException {
 		int numero;
 		System.out.println("Digite o numero do no que se quer achar o predecessor");
 		numero = in.nextInt();
 		
-		No result = abb.predecessor(numero);
-		System.out.println("O predecessor de "+ numero + " � " + result.getNumero());
+		No result = arn.predecessor(numero);
+		System.out.println("O predecessor de "+ numero + " eh " + result.getNumero());
 	}
 
-	private void sucessor() throws SuccessorNotFoundException{
+	private void sucessor() throws SuccessorNotFoundException {
 		int numero;
 		System.out.println("Digite o numero do no que se quer achar o sucessor");
 		numero = in.nextInt();
 		
-		No result = abb.sucessor(numero);
-		System.out.println("O sucessor de "+ numero + " � " + result.getNumero());
+		No result = arn.sucessor(numero);
+		System.out.println("O sucessor de "+ numero + " eh " + result.getNumero());
 	}
 
 	private void buscaNo() {
@@ -112,7 +114,7 @@ public class Menu {
 		System.out.println("Digite o numero do no a ser buscado");
 		numero = in.nextInt();
 		
-		No result = abb.busca(numero);
+		No result = arn.busca(numero);
 		System.out.println("no " + result.getNumero());
 		if (result.getEsquerda()!=null)
 			System.out.println("filho esquerdo "+ result.getEsquerda().getNumero());
@@ -125,15 +127,15 @@ public class Menu {
 	}
 
 	private void posOrdem() {
-		abb.printPos();
+		arn.printPos();
 	}
 
 	private void preOrdem() {
-		abb.printPre();
+		arn.printPre();
 	}
 
 	private void inOrdem() {
-		abb.print();
+		arn.print();
 	}
 
 	private void remocao() {
@@ -141,7 +143,7 @@ public class Menu {
 		System.out.println("Digite o numero a ser removido da arvore");
 		numero = in.nextInt();
 		
-		boolean success = (abb.remove(numero) != null);
+		boolean success = (arn.remove(numero) != null);
 		if (success)
 			System.out.println("remocao bem sucedida");
 		else
@@ -154,13 +156,13 @@ public class Menu {
 		numero = in.nextInt();
 		
 		try {
-			abb.inserir(numero);
+			arn.inserir(numero);
 		} catch (ChaveInvalidaException e) {
 			System.out.println("Valor inserido invalido.\nPor favor insira um numero nao negativo");
 		}
 	}
 
-	public static void main(String[] args) throws NoJaExisteException, SuccessorNotFoundException, PredecessorNotFoundException {
+	public static void main(String[] args) throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException {
 		Menu menu = new Menu();
 		menu.init();
 	}

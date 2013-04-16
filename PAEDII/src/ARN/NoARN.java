@@ -9,22 +9,31 @@ public class NoARN extends No {
 	public Cor cor;
 	private NoARN esquerda;
 	private NoARN direita;
+	private NoARN pai;
 	
 	public NoARN(int i) {
 		super(i);
 		cor = Cor.VERMELHO;
+		criaFilhos();
+	}
+	
+	public NoARN() {
+		direita = null;
+		esquerda = null;
+		cor = cor.PRETO;
+		super.setNumero(-1);
 	}
 	
 	public NoARN getEsquerda() {
 		return esquerda;
 	}
 	
-	public NoARN getDireita() {
-		return direita;
-	}
-	
 	public void setEsquerda(NoARN esquerda) {
 		this.esquerda = esquerda;
+	}
+	
+	public NoARN getDireita() {
+		return direita;
 	}
 	
 	public void setDireita(NoARN direita) {
@@ -39,25 +48,39 @@ public class NoARN extends No {
 		this.cor = cor;
 	}
 	
-	public NoARN Avo () {
-		return  (NoARN) super.Pai().Pai();
+	@Override
+	public NoARN Pai() {
+		return pai;
 	}
 	
-	@Override
-	public NoARN Pai(){ 
-		return (NoARN) super.Pai();
+	public void setPai(NoARN pai) {
+		this.pai = pai;
+	}
+	
+	public NoARN Avo () {
+		return  Pai().Pai();
 	}
 	
 	public NoARN Tio () {
 		
 		// o tio estah na esquerda
-		if (super.Pai().Pai().getDireita().equals(super.Pai())){
-			return (NoARN) super.Pai().Pai().getEsquerda();
+		if (Avo().getDireita().equals(Pai())){
+			return Avo().getEsquerda();
 		}
 		
 		// o tio estah na direita
-		else return (NoARN) super.Pai().Pai().getDireita();
+		else return Avo().getDireita();
 
 	}
 	
+	public boolean eVermelho(){
+		return this.getCor().equals(Cor.VERMELHO);
+	}
+	
+	public void criaFilhos(){
+		this.setEsquerda(new NoARN());
+		this.getEsquerda().setPai(this);
+		this.setDireita(new NoARN());
+		this.getDireita().setPai(this);
+	}	
 }
