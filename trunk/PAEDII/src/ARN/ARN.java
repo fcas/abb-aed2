@@ -80,14 +80,26 @@ public class ARN extends ABB {
 
 	}
 
-	private void rotacaoDireita(NoARN avo) {
-		// TODO Auto-generated method stub
-		
+	private void rotacaoDireita(NoARN no) {
+		NoARN aux =  no.Pai();
+		no.setPai(no.getEsquerda());
+		no.getEsquerda().setPai(aux);
+		NoARN esquerdaAux =  no.getEsquerda();
+		no.setEsquerda(no.getEsquerda().getEsquerda());
+		esquerdaAux.setEsquerda(esquerdaAux.getDireita() );
+		esquerdaAux.setDireita(no.getDireita());
+		no.setDireita((esquerdaAux));
 	}
 
 	private void rotacaoEsquerda(NoARN no) {
-		// TODO Auto-generated method stub
-		
+		NoARN aux =  no.Pai();
+		no.setPai(no.getEsquerda());
+		no.getDireita().setPai(aux);
+		NoARN direitaAux =  no.getDireita();
+		no.setDireita(no.getDireita().getDireita());
+		direitaAux.setDireita(direitaAux.getDireita() );
+		direitaAux.setEsquerda(no.getEsquerda());
+		no.setEsquerda((direitaAux));
 	}
 	
 	/*Imprime os nos da Arvore percorrendo em ordem*/
