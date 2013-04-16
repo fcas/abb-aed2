@@ -6,11 +6,11 @@ public class NoARN extends No {
 	public enum Cor{
 		VERMELHO, PRETO
 	}
-	private Cor cor;
+	public Cor cor;
 	
 	public NoARN(int i) {
 		super(i);
-		cor = cor.VERMELHO;
+		cor = Cor.VERMELHO;
 	}
 	
 	public Cor getCor() {
@@ -21,16 +21,25 @@ public class NoARN extends No {
 		this.cor = cor;
 	}
 	
-	public No avo(No no) {
-		return  no.Pai().Pai();
+	public NoARN Avo () {
+		return  (NoARN) super.Pai().Pai();
 	}
 	
-	public No tioEsquerda (No no) {
-		return no.Pai().Pai().getEsquerda();
+	@Override
+	public NoARN Pai(){ 
+		return (NoARN) super.Pai();
 	}
 	
-	public No tioDireita (No no){ 
-		return no.Pai().Pai().getDireita();
+	public NoARN Tio () {
+		
+		// o tio estah na esquerda
+		if (super.Pai().Pai().getDireita().equals(super.Pai())){
+			return (NoARN) super.Pai().Pai().getEsquerda();
+		}
+		
+		// o tio estah na direita
+		else return (NoARN) super.Pai().Pai().getDireita();
+
 	}
 	
 }
