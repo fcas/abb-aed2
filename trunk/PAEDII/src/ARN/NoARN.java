@@ -7,10 +7,28 @@ public class NoARN extends No {
 		VERMELHO, PRETO
 	}
 	public Cor cor;
+	private NoARN esquerda;
+	private NoARN direita;
 	
 	public NoARN(int i) {
 		super(i);
 		cor = Cor.VERMELHO;
+	}
+	
+	public NoARN getEsquerda() {
+		return esquerda;
+	}
+	
+	public NoARN getDireita() {
+		return direita;
+	}
+	
+	public void setEsquerda(NoARN esquerda) {
+		this.esquerda = esquerda;
+	}
+	
+	public void setDireita(NoARN direita) {
+		this.direita = direita;
 	}
 	
 	public Cor getCor() {

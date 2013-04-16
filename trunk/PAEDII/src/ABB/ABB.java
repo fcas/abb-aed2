@@ -180,13 +180,13 @@ public class ABB {
 	
 	/**Imprime os nos da Arvore percorrendo em ordem**/
 	public void print(){
-		visitarEmOrdem(raiz);
+		Oi(raiz);
 	}
-	private void visitarEmOrdem(No node) {
+	private void Oi(No node) {
 		if (node != null){
-			visitarEmOrdem(node.getEsquerda());
+			Oi(node.getEsquerda());
 			System.out.println(node.getNumero());
-			visitarEmOrdem(node.getDireita());
+			Oi(node.getDireita());
 		}
 	}
 	
