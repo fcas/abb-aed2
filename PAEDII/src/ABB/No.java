@@ -42,7 +42,7 @@ public class No {
 	public No Pai() {
 		return pai;
 	}
-
+	
 	public void setPai(No pai) {
 		this.pai = pai;
 	}
