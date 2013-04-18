@@ -1,0 +1,44 @@
+41p [ok]
+41p 75v [ok]
+75p 41v 138v [ok]
+75p 41p 71v 138p [ok]
+75p 41p 14v 71v 138p [ok]
+75p 41v 14p 29v 71p 138p [ok]
+75p 41v 14p 29v 71p 66v 138p [ok]
+75p 41v 14p 29v 66p 60v 71v 138p [ok]
+75p 41v 14p 29v 66p 60v 71v 138p 191v [ok]
+75p 41v 21p 14v 29v 66p 60v 71v 138p 191v [ok]
+41p 21v 14p 6v 29p 75v 66p 60v 71v 138p 191v [ok]
+41p 21p 14p 6v 29p 75p 66v 60p 45v 71p 138p 191v [ok]
+41p 21p 14p 6v 29p 34v 75p 66v 60p 45v 71p 138p 191v [ok]
+41p 21p 14p 6v 31p 29v 34v 75p 66v 60p 45v 71p 138p 191v [ok]
+41p 21p 14p 6v 31p 29v 75p 66v 60p 45v 71p 138p 191v [ok]
+41p 21p 14p 6v 31p 29v 75p 66v 53p 45v 60v 71p 138p 191v [ok]
+41p 21p 14p 6v 31p 29v 75p 66v 53p 45v 60v 71p 72v 138p 191v [ok]
+41p 21p 14p 6v 31p 29v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14p 6v 29p 24v 31v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14p 6v 20v 29p 24v 31v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14v 6p 12v 20p 29p 24v 31v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14v 6p 12v 20p 29v 24p 31p 35v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 31p 35v 66p 53v 45p 60p 62v 75v 71p 72v 138p 191v [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 31p 35v 66p 53v 45p 60p 62v 75v 71p 72v 138p 88v 191v [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 31p 35v 66v 53p 45p 60p 62v 75p 71p 72v 138v 88p 79v 191p [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 26v 31p 35v 66v 53p 45p 60p 62v 75p 71p 72v 138v 88p 79v 191p [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 26v 31p 35v 66v 53p 45p 60p 62v 75p 72p 71v 73v 138v 88p 79v 191p [ok]
+41p 21p 14v 8p 6v 12v 20p 29v 24p 26v 31p 35v 66v 53p 45p 60p 62v 75p 72p 71v 73v 138v 88p 79v 108v 191p [ok]
+no 72
+cor: PRETO
+filho esquerdo 71
+filho direito 73
+pai: 75
+no 73
+cor: VERMELHO
+filho esquerdo -1
+filho direito -1
+pai: 72
+CONSERRRRRRTA
+Exception in thread "main" java.lang.NullPointerException
+	at ARN.ARN.consertaRemove(ARN.java:344)
+	at ARN.ARN.remover(ARN.java:238)
+	at ARN.Teste.remove(Teste.java:37)
+	at ARN.Teste.main(Teste.java:91)

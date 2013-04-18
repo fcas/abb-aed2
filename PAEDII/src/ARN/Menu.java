@@ -7,6 +7,7 @@ import exceptions.ChaveInvalidaException;
 import exceptions.NoJaExisteException;
 import exceptions.PredecessorNotFoundException;
 import exceptions.SuccessorNotFoundException;
+import exceptions.VerificacaoFalhouException;
 
 
 public class Menu {
@@ -37,7 +38,7 @@ public class Menu {
 		
 	}
 	
-	public void init() throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException{
+	public void init() throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException, VerificacaoFalhouException{
 		
 		do{
 			mainMenu();
@@ -77,7 +78,7 @@ public class Menu {
 		}while (option != 0);
 	}
 	
-	private void validacao() {
+	private void validacao() throws VerificacaoFalhouException {
 		System.out.println("Arvore Rubro Negra Valida: " + arn.arvoreRubroNegraValida());
 	}
 
@@ -162,7 +163,7 @@ public class Menu {
 		}
 	}
 
-	public static void main(String[] args) throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException {
+	public static void main(String[] args) throws NoJaExisteException, PredecessorNotFoundException, SuccessorNotFoundException, VerificacaoFalhouException {
 		Menu menu = new Menu();
 		menu.init();
 	}

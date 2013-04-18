@@ -81,7 +81,7 @@ public class ABB {
 				return inserir(no.getEsquerda(), numero);
 			}
 			//Se nao houver subarvore esquerda, insere
-			else { 
+			else {
 				no.setEsquerda(new No(numero));
 				no.getEsquerda().setPai(no);
 				return no;

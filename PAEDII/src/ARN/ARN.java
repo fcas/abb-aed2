@@ -3,6 +3,7 @@ package ARN;
 import exceptions.ChaveInvalidaException;
 import exceptions.NoInvalidoException;
 import exceptions.NoJaExisteException;
+import exceptions.VerificacaoFalhouException;
 import ABB.ABB;
 import ARN.NoARN.Cor;
 
@@ -15,27 +16,31 @@ public class ARN extends ABB {
 		return raiz;
 	}
 	
+	public void setRaiz(NoARN raiz) {
+		this.raiz = raiz;
+	}
+	
 	public boolean isTerminal(NoARN no) {
 		return (no.getNumero() == -1);
 	}
 	
 	/**Encontra o menor no da subarvore**/
 	public NoARN min (NoARN no) {
-		if (no != null){
-			if (no.getEsquerda() != null){
-				return min(no.getEsquerda());
-			}else{
-				return no;
+		if (!no.ehExterno()){ //se nao for no externo
+			if (!no.getEsquerda().ehExterno()){ //se tem filho esquerdo
+				return min(no.getEsquerda());//redireciona
+			}else{ //se nao tem filho esquerdo
+				return no; //eh o minimo
 			}
-		}else{
+		}else{ //se for no externo
 			return null;
 		}
 	}
 	
 	/**Encontra o maior no da subarvore**/
 	public NoARN max(NoARN no) {
-		if (no != null){
-			if (no.getDireita() != null){
+		if (!no.ehExterno()){
+			if (!no.getDireita().ehExterno()){
 				return max(no.getDireita());
 			}else{
 				return no;
@@ -78,7 +83,7 @@ public class ARN extends ABB {
 		x.getDireita().setPai(y);
 		x.setPai(y.Pai());
 		if (y.Pai() == null){
-			raiz = x;
+			setRaiz(x);
 		} else {
 			if (y.Pai().getDireita().equals(y)){
 				y.Pai().setDireita(x);
@@ -88,7 +93,6 @@ public class ARN extends ABB {
 		}
 		x.setDireita(y);
 		y.setPai(x);
-			
 	}
 
 	/**Rotacao esquerda**/
@@ -98,7 +102,7 @@ public class ARN extends ABB {
 		y.getEsquerda().setPai(x);
 		y.setPai(x.Pai());
 		if (x.Pai() == null){
-			raiz = y;
+			setRaiz(y);
 		} else {
 			if (x.Pai().getEsquerda().equals(x)){
 				x.Pai().setEsquerda(y);
@@ -145,7 +149,7 @@ public class ARN extends ABB {
 		if (numero < no.getNumero()){
 			
 			//Se ha subarvore esquerda, continua a busca
-			if (no.getEsquerda() != null){
+			if (!no.getEsquerda().ehExterno()){
 				return inserirEmABB(no.getEsquerda(), numero);
 			}
 			//Se nao houver subarvore esquerda, insere
@@ -159,7 +163,7 @@ public class ARN extends ABB {
 		else if(numero > no.getNumero()){
 			
 			//Se ha subarvore direita, continua a busca
-			if (no.getDireita() != null){
+			if (!no.getDireita().ehExterno()){
 				return inserirEmABB(no.getDireita(), numero);
 			}
 			//Se nao houver subarvore direita, insere
@@ -175,11 +179,8 @@ public class ARN extends ABB {
 		}
 	}
 	private void consertaInsere(NoARN z) {
-		
 		//enquanto z nao for a raiz e o pai de z for vermelho
-		while (!(z.equals(this.getRaiz())) && (z.Pai().getCor()
-				.equals(Cor.VERMELHO))) {
-			
+		while (!(z.equals(this.getRaiz())) && (z.Pai().eVermelho())) {
 			//se o pai de z eh filho esquerdo do avo de z
 			if (z.Pai().equals(z.Avo().getEsquerda())) {
 				//checando o lado
@@ -202,12 +203,10 @@ public class ARN extends ABB {
 					z.Avo().alteraCor(Cor.VERMELHO);
 					rotacaoDireita(z.Avo());
 				}
-				
-				
 			} else {
 				//checando o lado
 				NoARN y = z.Tio();
-				if (y.eVermelho()){ 	
+				if (y.eVermelho()){
 					//caso 4
 					z.Pai().alteraCor(Cor.PRETO);
 					y.alteraCor(Cor.PRETO);
@@ -226,17 +225,20 @@ public class ARN extends ABB {
 				rotacaoEsquerda(z.Avo());
 				}
 			}
-
 		}
-		
 		getRaiz().alteraCor(Cor.PRETO);
-
 	}
 
 	/**Remove em metodo ABB e rebalanceia a arvore**/
 	public NoARN remover(int numero){
+		NoARN w = busca(numero);
+		/*
+		 * O metodo precisa saber quem eh o no EFETIVAMENTE removido e saber se ele eh "nao externo & preto".
+		 * Em seguida, o metodo chama o ConsertaRemove para o no QUE SUBSTITUIU O NO EFETIVAMENTE REMOVIDO.
+		 */
 		NoARN x = removeEmABB(numero);
-		if (x.getNumero() != -1 && !(x.eVermelho())){
+		if (!w.ehExterno() && !(w.eVermelho())){
+			System.out.println("CONSERRRRRRTA");
 			consertaRemove(x);
 		}
 		return x;
@@ -262,26 +264,40 @@ public class ARN extends ABB {
 				ok = removeEmABB(numero, no.getDireita());
 			}
 			//Se o no a ser removido for o atual
-			else{
-				if(no.getEsquerda().getNumero() != -1 && no.getDireita().getNumero() != -1) { //tem os dois filhos
+			else if (numero == no.getNumero()){
+				if(!no.getEsquerda().ehExterno() && !no.getDireita().ehExterno()) { //tem os dois filhos
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
 					ok = removeEmABB(aux.getNumero(), no.getDireita());
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
 					
-					if (aux.getEsquerda().getNumero() != -1){ //se so tem filho na esquerda
+					if (!aux.getEsquerda().ehExterno()){ //se so tem filho na esquerda
 						NoARN pai = aux.Pai();
-						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
-						pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
-						ok = pai.getEsquerda();
-					} else { //se so tem um ou nenhum filho
+						if (pai.getEsquerda().equals(aux)){//se aux eh filho esquerdo do pai
+							pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
+							pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
+							ok = pai.getEsquerda();
+						} else { //se eh filho direito do pai
+							pai.setDireita(aux.getEsquerda()); //pai aponta pro neto
+							pai.getDireita().setPai(pai);
+							ok = pai.getDireita();
+						}
+					} else { //se so tem filho direito ou nenhum filho
 						NoARN pai = aux.Pai();
-						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
-						pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
-						ok = pai.getDireita();
+						if (pai.getEsquerda().equals(aux)){ //se for filho esquerdo do pai
+							pai.setEsquerda(aux.getDireita()); //ponteiro esquerdo do pai aponta pro neto
+							pai.getEsquerda().setPai(pai); //ponteiro do neto aponta pro pai
+							ok = pai.getEsquerda();
+						} else {
+							pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
+							pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
+							ok = pai.getDireita();
+						}
 					}
 				}
+			}else {
+				ok = null;
 			}
 		}else{
 			ok = null;
@@ -329,6 +345,7 @@ public class ARN extends ABB {
 					rotacaoDireita(x.Pai());
 					w = x.Pai().getEsquerda();
 				}
+				System.out.println(w.getEsquerda().getNumero());
 				if (!(w.getDireita().eVermelho() || w.getEsquerda().eVermelho())) {
 					//caso 6
 					w.alteraCor(Cor.VERMELHO);
@@ -392,7 +409,7 @@ public class ARN extends ABB {
 		}
 	}
 	
-	public boolean arvoreRubroNegraValida(){
+	public boolean arvoreRubroNegraValida() throws VerificacaoFalhouException{
 		if (raiz.getCor().equals(Cor.PRETO)){
 			return (verificaNo(raiz) > 0);	
 		} else {
@@ -402,7 +419,7 @@ public class ARN extends ABB {
 		
 	}
 	
-	public int verificaNo(NoARN no){
+	public int verificaNo(NoARN no) throws VerificacaoFalhouException{
 		/*
 		1.	[x]Coloracao – Todo no possui uma e apenas uma de duas cores: vermelho ou preto.
 		2.	[x]Raiz – A cor do no raiz e PRETA.
@@ -420,7 +437,8 @@ public class ARN extends ABB {
 			if (no.eVermelho()){
 				if (filhoEsquerdo.eVermelho() || filhoDireito.eVermelho()){
 					System.out.println("Violacao de Vermelho");
-					return 0;
+					throw new VerificacaoFalhouException();
+//					return 0;
 				}
 			}
 			
@@ -431,13 +449,15 @@ public class ARN extends ABB {
 			if (!filhoEsquerdo.ehExterno() && filhoEsquerdo.getNumero() >= no.getNumero()
 					|| !filhoDireito.ehExterno() && filhoDireito.getNumero() <= no.getNumero()){
 				System.out.println("Violacao de ABB");
-				return 0;
+				throw new VerificacaoFalhouException();
+//				return 0;
 			}
 			
 			//Altura negra
 			if (altEsq != 0 && altDir != 0 && altEsq != altDir){
 				System.out.println("Violacao de Altura Negra");
-				return 0;
+				throw new VerificacaoFalhouException();
+//				return 0;
 			}
 			
 			if (altEsq != 0 && altDir != 0){
@@ -452,7 +472,8 @@ public class ARN extends ABB {
 				return 1;
 			} else{
 				System.out.println("Violacao de Cor do No Externo");
-				return 0;
+				throw new VerificacaoFalhouException();
+//				return 0;
 			}
 		}
 		return -1;
