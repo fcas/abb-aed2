@@ -281,20 +281,20 @@ public class ABB {
 		 * caso 1 no externo
 		 * caso 2 folha
 		 * caso 3 dois filhos
-		 * caso 4 s� filho esquerdo
+		 * caso 4 so filho esquerdo
 		 * caso 5 so filho direito
 		 */
-		if (no != null){ //caso 1
-			if (no.getEsquerda() == null && no.getDireita() == null){ //caso 2
+		if (no.getNumero() != -1){
+			if (no.getEsquerda().getNumero() == -1 && no.getDireita().getNumero() == -1){ //caso 2
 				return true;
 			}else {
-				if (no.getEsquerda() != null && no.getDireita() != null){ //caso 3
+				if (no.getEsquerda().getNumero() != -1 && no.getDireita().getNumero() != -1){ //caso 3
 					if (no.getEsquerda().getNumero() < no.getNumero() && no.getDireita().getNumero() > no.getNumero()){ //os dois filhos obedecem a regra
-						return (verificaNo(no.getEsquerda()) &&  verificaNo(no.getDireita()));
+						return (verificaNo(no.getEsquerda()) &&  verificaNo(no.getDireita())); //se os filhos obedecem as propriedades, espalha
 					} else { // tem os dois filhos mas um dos dois ou ambos, desobedecem a regra
-						return false;
+						return false; //se 
 					}
-				} else if (no.getEsquerda() != null){ //caso 4
+				} else if (no.getEsquerda().getNumero() != -1){ //caso 4
 					if (no.getEsquerda().getNumero() < no.getNumero()){ //se o esquerdo obedece a regra
 						return verificaNo(no.getEsquerda());
 					}else{ //se o esquerdo desobedece
@@ -308,7 +308,7 @@ public class ABB {
 					}
 				}
 			}
-		}else{
+		}else{  //caso 1
 			return true;
 		}
 	}
