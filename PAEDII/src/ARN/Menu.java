@@ -33,7 +33,7 @@ public class Menu {
 		System.out.println("8- Procurar Predecessor");
 		System.out.println("9- Buscar No Maximo");
 		System.out.println("10- Buscar No Minimo");
-		System.out.println("11- Verificar se Arvore � ABB");
+		System.out.println("11- Verificar se Arvore e uma ARN valida");
 		
 	}
 	
@@ -64,8 +64,8 @@ public class Menu {
 						break;
 				case 10: min();
 						break;
-//				case 11: validacao();
-//						break;
+				case 11: validacao();
+						break;
 				case 0: in.close();
 						System.out.println("Ate logo!");
 						return;
@@ -77,9 +77,9 @@ public class Menu {
 		}while (option != 0);
 	}
 	
-//	private void validacao() {
-//		System.out.println("Arvore Binaria de Busca Valida: " + arn.arvoreBinariaBuscaValida());
-//	}
+	private void validacao() {
+		System.out.println("Arvore Rubro Negra Valida: " + arn.arvoreRubroNegraValida());
+	}
 
 	private void min() {
 		NoARN result = arn.min(arn.getRaiz());
