@@ -20,7 +20,7 @@ public class NoARN extends No {
 	public NoARN() {
 		direita = null;
 		esquerda = null;
-		cor = cor.PRETO;
+		cor = Cor.PRETO;
 		super.setNumero(-1);
 	}
 	
@@ -75,6 +75,10 @@ public class NoARN extends No {
 	
 	public boolean eVermelho(){
 		return this.getCor().equals(Cor.VERMELHO);
+	}
+	
+	public boolean ehExterno(){
+		return (this.getNumero() == -1);
 	}
 	
 	public void criaFilhos(){

@@ -4,7 +4,6 @@ import exceptions.ChaveInvalidaException;
 import exceptions.NoInvalidoException;
 import exceptions.NoJaExisteException;
 import ABB.ABB;
-import ABB.No;
 import ARN.NoARN.Cor;
 
 public class ARN extends ABB {
@@ -394,33 +393,68 @@ public class ARN extends ABB {
 	}
 	
 	public boolean arvoreRubroNegraValida(){
-			return verificaNo(raiz);
+		if (raiz.getCor().equals(Cor.PRETO)){
+			return (verificaNo(raiz) > 0);	
+		} else {
+			System.out.println("Violacao da Cor da Raiz");
+			return false;
+		}
+		
 	}
 	
-	public boolean verificaNo(NoARN no){
+	public int verificaNo(NoARN no){
 		/*
-		 * caso 1 no externo
-		 * caso especial: ser a raiz
-		 * caso 2 folha
-		 * caso 3 dois filhos
-		 * caso 4 so filho esquerdo
-		 * caso 5 so filho direito
-		
-		 	1.	Coloracao – Todo no possui uma e apenas uma de duas cores: vermelho ou preto.
-			2.	Raiz – A cor do no raiz e PRETA.
-			3.	No Externo – Todo no externo possui cor PRETA.
-			4.	No Interno – Todo no interno associado a cor VERMELHA possui dois filhos de cor PRETA.
-			5.	Profundidade – Para cada no, todos os caminhos do no a um no externo possuem o mesmo numero de nos associados a cor PRETA.
-			6.  Arvore Binaria de Busca - Todo filho esquerdo tem que ser menor que o pai e todo filho direito tem que ser maior.
+		1.	[x]Coloracao – Todo no possui uma e apenas uma de duas cores: vermelho ou preto.
+		2.	[x]Raiz – A cor do no raiz e PRETA.
+		3.	[x]No Externo – Todo no externo possui cor PRETA.
+		4.	[x]No Interno – Todo no interno associado a cor VERMELHA possui dois filhos de cor PRETA.
+		5.	[x]Profundidade – Para cada no, todos os caminhos do no a um no externo possuem o mesmo numero de nos associados a cor PRETA.
+		6.  [x]Arvore Binaria de Busca - Todo filho esquerdo tem que ser menor que o pai e todo filho direito tem que ser maior.
 		 */
-		if (no.getNumero() != -1){
+		int altEsq, altDir;
+		if (!(no.ehExterno())){
+			NoARN filhoEsquerdo = no.getEsquerda();
+			NoARN filhoDireito = no.getDireita();
 			
+			//Pai vermelho com filho vermelho
+			if (no.eVermelho()){
+				if (filhoEsquerdo.eVermelho() || filhoDireito.eVermelho()){
+					System.out.println("Violacao de Vermelho");
+					return 0;
+				}
+			}
 			
-		}else {//caso 1
+			altEsq = verificaNo(filhoEsquerdo);
+			altDir = verificaNo(filhoDireito);
+			
+			//Arvore Binaria de Busca
+			if (!filhoEsquerdo.ehExterno() && filhoEsquerdo.getNumero() >= no.getNumero()
+					|| !filhoDireito.ehExterno() && filhoDireito.getNumero() <= no.getNumero()){
+				System.out.println("Violacao de ABB");
+				return 0;
+			}
+			
+			//Altura negra
+			if (altEsq != 0 && altDir != 0 && altEsq != altDir){
+				System.out.println("Violacao de Altura Negra");
+				return 0;
+			}
+			
+			if (altEsq != 0 && altDir != 0){
+				if (no.eVermelho()){
+					return altEsq;
+				}else{
+					return altEsq+1;
+				}
+			}
+		}else {
 			if (no.getCor().equals(Cor.PRETO)){
-				return true;
-			} else
-				return false;
+				return 1;
+			} else{
+				System.out.println("Violacao de Cor do No Externo");
+				return 0;
+			}
 		}
+		return -1;
 	}
 }
