@@ -6,13 +6,14 @@ public class NoARN extends No {
 	public enum Cor{
 		VERMELHO, PRETO
 	}
+	private int numero;
 	public Cor cor;
 	private NoARN esquerda;
 	private NoARN direita;
 	private NoARN pai;
 	
 	public NoARN(int i) {
-		super(i);
+		this.numero = i;
 		cor = Cor.VERMELHO;
 		criaFilhos();
 	}
@@ -21,7 +22,15 @@ public class NoARN extends No {
 		direita = null;
 		esquerda = null;
 		cor = Cor.PRETO;
-		super.setNumero(-1);
+		setNumero(-1);
+	}
+	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
+	public int getNumero() {
+		return numero;
 	}
 	
 	public NoARN getEsquerda() {
