@@ -392,4 +392,35 @@ public class ARN extends ABB {
 			visitarPreOrdem(node.getDireita());
 		}
 	}
+	
+	public boolean arvoreRubroNegraValida(){
+			return verificaNo(raiz);
+	}
+	
+	public boolean verificaNo(NoARN no){
+		/*
+		 * caso 1 no externo
+		 * caso especial: ser a raiz
+		 * caso 2 folha
+		 * caso 3 dois filhos
+		 * caso 4 so filho esquerdo
+		 * caso 5 so filho direito
+		
+		 	1.	Coloracao – Todo no possui uma e apenas uma de duas cores: vermelho ou preto.
+			2.	Raiz – A cor do no raiz e PRETA.
+			3.	No Externo – Todo no externo possui cor PRETA.
+			4.	No Interno – Todo no interno associado a cor VERMELHA possui dois filhos de cor PRETA.
+			5.	Profundidade – Para cada no, todos os caminhos do no a um no externo possuem o mesmo numero de nos associados a cor PRETA.
+			6.  Arvore Binaria de Busca - Todo filho esquerdo tem que ser menor que o pai e todo filho direito tem que ser maior.
+		 */
+		if (no.getNumero() != -1){
+			
+			
+		}else {//caso 1
+			if (no.getCor().equals(Cor.PRETO)){
+				return true;
+			} else
+				return false;
+		}
+	}
 }
