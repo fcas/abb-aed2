@@ -156,23 +156,36 @@ public class ABB {
 			}
 			//Se o no a ser removido for o atual
 			else if (no.getNumero() == numero){
-				if(no.getEsquerda().getNumero() != -1 && no.getDireita().getNumero() != -1) { //tem os dois filhos
+				if(!no.getEsquerda().ehExterno() && !no.getDireita().ehExterno()) { //tem os dois filhos
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
 					ok = remove(aux.getNumero(), no.getDireita());
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
 					
-					if (aux.getEsquerda().getNumero() != -1){ //se so tem filho na esquerda
+					if (!aux.getEsquerda().ehExterno()){ //se so tem filho na esquerda
 						No pai = aux.Pai();
-						pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
-						pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
-						ok = pai.getEsquerda();
+						if (pai.getEsquerda().equals(aux)){
+							pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
+							pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
+							ok = pai.getEsquerda();	
+						} else {
+							pai.setDireita(aux.getEsquerda()); //pai aponta pro neto
+							pai.getDireita().setPai(pai);
+							ok = pai.getDireita();
+						}
+						
 					} else { //se so tem um ou nenhum filho
 						No pai = aux.Pai();
-						pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
-						pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
-						ok = pai.getDireita();
+						if (pai.getEsquerda().equals(aux)){
+							pai.setEsquerda(aux.getDireita()); //ponteiro esquerdo do pai aponta pro neto
+							pai.getEsquerda().setPai(pai); //ponteiro do neto aponta pro pai
+							ok = pai.getEsquerda();
+						} else {
+							pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
+							pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
+							ok = pai.getDireita();
+						}
 					}
 				}
 			} else {

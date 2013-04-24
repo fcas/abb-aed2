@@ -32,7 +32,6 @@ public class Menu {
 		System.out.println("9- Buscar No Maximo");
 		System.out.println("10- Buscar No Minimo");
 		System.out.println("11- Verificar se Arvore � ABB");
-		
 	}
 	
 	public void init() throws NoJaExisteException, SuccessorNotFoundException, PredecessorNotFoundException{

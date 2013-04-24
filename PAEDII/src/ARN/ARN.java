@@ -231,54 +231,60 @@ public class ARN extends ABB {
 
 	/**Remove em metodo ABB e rebalanceia a arvore**/
 	public NoARN remover(int numero){
-		NoARN w = busca(numero);
+		if (raiz == null){
+			System.out.println("Armaria omh, tais frescano cumigué? \nTu nem botasse e ja quer tirar?!");
+			return null;
+		}
+		NoARN w = new NoARN();
 		/*
 		 * O metodo precisa saber quem eh o no EFETIVAMENTE removido e saber se ele eh "nao externo & preto".
 		 * Em seguida, o metodo chama o ConsertaRemove para o no QUE SUBSTITUIU O NO EFETIVAMENTE REMOVIDO.
 		 */
-		NoARN x = removeEmABB(numero);
+		NoARN x = removeEmABB(numero, w);
 		if (!w.ehExterno() && !(w.eVermelho())){
 			System.out.println("CONSERRRRRRTA");
 			consertaRemove(x);
 		}
 		return x;
 	}
-	private NoARN removeEmABB(int numero) {
+	private NoARN removeEmABB(int numero, NoARN w) {
 		try {
-			return removeEmABB(numero, raiz);
+			return removeEmABB(numero, raiz, w);
 		} catch (NoInvalidoException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	private NoARN removeEmABB(int numero, NoARN no) throws NoInvalidoException {
+	private NoARN removeEmABB(int numero, NoARN no, NoARN w) throws NoInvalidoException {
 		NoARN aux = no;
 		NoARN ok = null;
 		if (aux != null) {
 			//Se o no a ser removido for menor que o no atual
 			if (numero < no.getNumero()){
-				ok = removeEmABB(numero, no.getEsquerda());
+				ok = removeEmABB(numero, no.getEsquerda(), w);
 			}
 			//Se o no a ser removido for maior que o no atual
 			else if (numero > no.getNumero()){
-				ok = removeEmABB(numero, no.getDireita());
+				ok = removeEmABB(numero, no.getDireita(), w);
 			}
 			//Se o no a ser removido for o atual
 			else if (numero == no.getNumero()){
 				if(!no.getEsquerda().ehExterno() && !no.getDireita().ehExterno()) { //tem os dois filhos
 					aux = min(no.getDireita());
 					no.setNumero(aux.getNumero());
-					ok = removeEmABB(aux.getNumero(), no.getDireita());
+					ok = removeEmABB(aux.getNumero(), no.getDireita(), w);
 				}else{ //no tem um ou nenhum filho
 					aux = no; //guarda apontador do no modificado
 					
 					if (!aux.getEsquerda().ehExterno()){ //se so tem filho na esquerda
 						NoARN pai = aux.Pai();
 						if (pai.getEsquerda().equals(aux)){//se aux eh filho esquerdo do pai
+							w = pai.getEsquerda(); //Salvo em W a referencia do no efetivamente excluido
 							pai.setEsquerda(aux.getEsquerda()); //pai aponta pro neto
 							pai.getEsquerda().setPai(pai); //antigo neto (agora filho) aponta pro pai
 							ok = pai.getEsquerda();
 						} else { //se eh filho direito do pai
+							w = pai.getDireita(); //Salvo em W a referencia do no efetivamente excluido
 							pai.setDireita(aux.getEsquerda()); //pai aponta pro neto
 							pai.getDireita().setPai(pai);
 							ok = pai.getDireita();
@@ -286,10 +292,12 @@ public class ARN extends ABB {
 					} else { //se so tem filho direito ou nenhum filho
 						NoARN pai = aux.Pai();
 						if (pai.getEsquerda().equals(aux)){ //se for filho esquerdo do pai
+							w = pai.getEsquerda(); //Salvo em W a referencia do no efetivamente excluido
 							pai.setEsquerda(aux.getDireita()); //ponteiro esquerdo do pai aponta pro neto
 							pai.getEsquerda().setPai(pai); //ponteiro do neto aponta pro pai
 							ok = pai.getEsquerda();
 						} else {
+							w = pai.getDireita(); //Salvo em W a referencia do no efetivamente excluido
 							pai.setDireita(aux.getDireita()); //pai aponta pro neto ou para o no vazio a direita
 							pai.getDireita().setPai(pai); //antigo neto (agora filho) aponta pro pai
 							ok = pai.getDireita();
@@ -410,13 +418,16 @@ public class ARN extends ABB {
 	}
 	
 	public boolean arvoreRubroNegraValida() throws VerificacaoFalhouException{
+		if (raiz == null){
+			System.out.println("Armaria omh, tais frescano cumigué? Bote um no ai, va la...");
+			return false;
+		}
 		if (raiz.getCor().equals(Cor.PRETO)){
 			return (verificaNo(raiz) > 0);	
 		} else {
 			System.out.println("Violacao da Cor da Raiz");
 			return false;
 		}
-		
 	}
 	
 	public int verificaNo(NoARN no) throws VerificacaoFalhouException{
@@ -467,7 +478,7 @@ public class ARN extends ABB {
 					return altEsq+1;
 				}
 			}
-		}else {
+		}else { //se for no externo
 			if (no.getCor().equals(Cor.PRETO)){
 				return 1;
 			} else{
