@@ -28,17 +28,17 @@ public class Teste {
 	private void insert(int numero) throws NoJaExisteException, ChaveInvalidaException, VerificacaoFalhouException{
 		NoARN no = arn.inserir(numero);
 		imprime();
-		if (arn.arvoreRubroNegraValida()){
+//		if (arn.arvoreRubroNegraValida()){
 			System.out.println("[ok]");
-		}
+//		}
 	}
 	
 	private void remove(int numero) throws VerificacaoFalhouException{
 		NoARN no = arn.remover(numero);
 		imprime();
-		if (arn.arvoreRubroNegraValida()){
+//		if (arn.arvoreRubroNegraValida()){
 			System.out.println("[ok]");
-		}
+//		}
 	}
 	
 	private void imprime(){

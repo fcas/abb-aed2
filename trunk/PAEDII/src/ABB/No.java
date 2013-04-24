@@ -16,7 +16,9 @@ public class No {
 	}
 	
 	public No(){
-		
+		direita = null;
+		esquerda = null;
+		setNumero(-1);
 	}
 	
 	public int getNumero() {
@@ -49,5 +51,16 @@ public class No {
 	
 	public void setPai(No pai) {
 		this.pai = pai;
+	}
+	
+	public boolean ehExterno(){
+		return (this.getNumero() == -1);
+	}
+	
+	public void criaFilhos(){
+		this.setEsquerda(new No());
+		this.getEsquerda().setPai(this);
+		this.setDireita(new No());
+		this.getDireita().setPai(this);
 	}
 }

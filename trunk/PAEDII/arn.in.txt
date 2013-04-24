@@ -26,8 +26,6 @@ insert 79
 insert 26
 insert 73
 insert 108
-busca 72
-busca 73
 remove 72
 insert 80
 remove 80
@@ -51,15 +49,7 @@ insert 145
 insert 113
 insert 162
 insert 100
-busca 156
-busca 145
-busca 170
-busca 162
-busca 176
 remove 145
-busca 162
-busca 156
-busca 170
 insert 51
 insert 19
 remove 53
