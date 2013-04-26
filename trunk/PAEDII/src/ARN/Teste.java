@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import ABB.No;
 import ARN.NoARN.Cor;
 
 import exceptions.ChaveInvalidaException;
@@ -26,6 +25,7 @@ public class Teste {
 		}
 	}
 	private void insert(int numero) throws NoJaExisteException, ChaveInvalidaException, VerificacaoFalhouException{
+		@SuppressWarnings("unused")
 		NoARN no = arn.inserir(numero);
 		imprime();
 //		if (arn.arvoreRubroNegraValida()){
@@ -34,6 +34,7 @@ public class Teste {
 	}
 	
 	private void remove(int numero) throws VerificacaoFalhouException{
+		@SuppressWarnings("unused")
 		NoARN no = arn.remover(numero);
 		imprime();
 //		if (arn.arvoreRubroNegraValida()){
