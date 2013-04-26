@@ -2,14 +2,14 @@ package BTREE;
 
 public class Tests {
     public static void test1(B bTree) throws Exception {
-            bTree.add(1, "1");
-            bTree.add(2, "2");
-            bTree.add(3, "3");
-            bTree.add(4, "4");
-            bTree.add(5, "5");
-            bTree.add(6, "6");
-            bTree.add(7, "7");
-            bTree.add(8, "8");              
+            bTree.inserir(1, "1");
+            bTree.inserir(2, "2");
+            bTree.inserir(3, "3");
+            bTree.inserir(4, "4");
+            bTree.inserir(5, "5");
+            bTree.inserir(6, "6");
+            bTree.inserir(7, "7");
+            bTree.inserir(8, "8");              
             System.out.println(bTree.toString());
             System.out.println(bTree.search(3));
             System.out.println(bTree.search2(8));
@@ -17,7 +17,7 @@ public class Tests {
             System.out.println(bTree.toString());
             bTree.delete(5);
             System.out.println(bTree.toString());
-            bTree.add(5, "5");
+            bTree.inserir(5, "5");
             System.out.println(bTree.toString());
             bTree.delete(5);
     }
@@ -27,7 +27,7 @@ public class Tests {
                             73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179 };
             
             for (int i = 0; i < primeNumbers.length; i++) {
-                    bTree.add(primeNumbers[i], String.valueOf(primeNumbers[i]));
+                    bTree.inserir(primeNumbers[i], String.valueOf(primeNumbers[i]));
             }
             for (int i = 0; i < primeNumbers.length; i++) {
                     String value = String.valueOf(primeNumbers[i]);
@@ -38,21 +38,21 @@ public class Tests {
             }
             
             bTree.delete(17);
-            bTree.validate();
+            bTree.validacao();
             bTree.delete(42);
-            bTree.validate();
+            bTree.validacao();
             bTree.delete(131);
-            bTree.validate();
+            bTree.validacao();
             bTree.delete(5);
-            bTree.validate();
+            bTree.validacao();
             
             for (int i = 77; i >= 0; i--) {                 
                     bTree.delete(i);                        
-                    bTree.validate();                       
+                    bTree.validacao();                       
             }
             
             for (int i = 0; i < primeNumbers.length; i++) {
-                    bTree.add(primeNumbers[i], String.valueOf(primeNumbers[i]));
+                    bTree.inserir(primeNumbers[i], String.valueOf(primeNumbers[i]));
             }               
             for (int i = 0; i < primeNumbers.length; i++) {
                     String value = String.valueOf(primeNumbers[i]);
@@ -64,26 +64,26 @@ public class Tests {
             
             for (int i = primeNumbers.length - 1; i >= 0; i--) {                    
                     bTree.delete(primeNumbers[i]);                  
-                    bTree.validate();                       
+                    bTree.validacao();                       
             }
     }
     
     public static void test3(B bTree) throws Exception {
             for (int i = 0; i < 1000; i++) {
-                    bTree.add(i, String.valueOf(i));
+                    bTree.inserir(i, String.valueOf(i));
             }
             
             System.out.println(bTree.search(777));
             bTree.delete(777);
-            bTree.validate();
+            bTree.validacao();
             System.out.println(bTree.toString());
             bTree.delete(511);
-            bTree.validate();
+            bTree.validacao();
             System.out.println(bTree.toString());
             
             for (int i = 1000; i >= 0; i--) {
                     bTree.delete(i);                        
-                    bTree.validate();                       
+                    bTree.validacao();                       
             }
     }
     
