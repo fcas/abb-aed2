@@ -133,15 +133,15 @@ public class B {
 		newPage.mEhPaginaFolha = page.mEhPaginaFolha;
 		newPage.mNumChaves = D - 1;
 		for (int j = 0; j < D - 1; j++) { // copia os últimos T-1 elementos de
-			// node
-			// em newNode.
+			// page
+			// em newPage.
 			newPage.mChaves[j] = page.mChaves[j + D];
 			newPage.mObjects[j] = page.mObjects[j + D];
 		}
 		if (!newPage.mEhPaginaFolha) {
 			for (int j = 0; j < D; j++) { // copia os últimos T pointeirs de
-				// node
-				// em newNode.
+				// page
+				// em newPage.
 				newPage.mPaginasFilhas[j] = page.mPaginasFilhas[j + D];
 			}
 			for (int j = D; j <= page.mNumChaves; j++) {
@@ -183,10 +183,7 @@ public class B {
 			page.mObjects[i] = object;
 			page.mNumChaves++;
 		} else {
-			// Move back from the last key of node until we find the child
-			// pointer to the node
-			// that is the root node of the subtree where the new element should
-			// be placed.
+			
 			while (i >= 0 && chave < page.mChaves[i]) {
 				i--;
 			}
@@ -201,11 +198,11 @@ public class B {
 		}
 	}
 
-	public void delete(int chave) {
-		delete(mPaginaRaiz, chave);
+	public void remover(int chave) {
+		remover(mPaginaRaiz, chave);
 	}
 
-	public void delete(Pagina page, int chave) {
+	public void remover(Pagina page, int chave) {
 		if (page.mEhPaginaFolha) {
 
 			int i;
@@ -227,7 +224,7 @@ public class B {
 					}
 					page.mChaves[i] = predecessorPage.mChaves[predecessorPage.mNumChaves - 1];
 					page.mObjects[i] = predecessorPage.mObjects[predecessorPage.mNumChaves - 1];
-					delete(pageRasura, page.mChaves[i]);
+					remover(pageRasura, page.mChaves[i]);
 				} else if (paginaFilhaDireita.mNumChaves >= D) {
 					Pagina sucessorPage = paginaFilhaDireita;
 					Pagina pageRasura = sucessorPage;
@@ -237,13 +234,13 @@ public class B {
 					}
 					page.mChaves[i] = sucessorPage.mChaves[0];
 					page.mObjects[i] = sucessorPage.mObjects[0];
-					delete(pageRasura, page.mChaves[i]);
+					remover(pageRasura, page.mChaves[i]);
 				} else {
-					int indiceChaveMediana = mergeNodes(paginaFilhaEsquerda,
+					int indiceChaveMediana = mergePages(paginaFilhaEsquerda,
 							paginaFilhaDireita);
 					moverChave(page, i, RIGHT_CHILD_PAGE, paginaFilhaEsquerda,
 							indiceChaveMediana);
-					delete(paginaFilhaEsquerda, chave);
+					remover(paginaFilhaEsquerda, chave);
 				}
 			} else {
 				i = page.indicePageSubarvoreRaiz(chave);
@@ -284,24 +281,24 @@ public class B {
 						irmaoFilhoDireita.remove(0, LEFT_CHILD_PAGE);
 					} else {
 						if (irmaoFilhoEsquerda != null) {
-							int medianKeyIndex = mergeNodes(paginaFilha,
+							int medianKeyIndex = mergePages(paginaFilha,
 									irmaoFilhoEsquerda);
 							moverChave(page, i - 1, LEFT_CHILD_PAGE, paginaFilha,
 									medianKeyIndex);
 						} else if (irmaoFilhoDireita != null) {
-							int medianKeyIndex = mergeNodes(paginaFilha,
+							int medianKeyIndex = mergePages(paginaFilha,
 									irmaoFilhoDireita);
 							moverChave(page, i, RIGHT_CHILD_PAGE, paginaFilha,
 									medianKeyIndex);
 						}
 					}
 				}
-				delete(paginaFilha, chave);
+				remover(paginaFilha, chave);
 			}
 		}
 	}
 
-	int mergeNodes(Pagina dstPage, Pagina srcPage) {
+	int mergePages(Pagina dstPage, Pagina srcPage) {
 		int indiceChaveMediana;
 		if (srcPage.mChaves[0] < dstPage.mChaves[dstPage.mNumChaves - 1]) {
 			int i;
@@ -356,23 +353,23 @@ public class B {
 	}
 
 	void moverChave(Pagina srcPage, int srcIndiceChave, int indiceFilho,
-			Pagina dstNode, int indiceChaveMediana) {
-		dstNode.mChaves[indiceChaveMediana] = srcPage.mChaves[srcIndiceChave];
-		dstNode.mObjects[indiceChaveMediana] = srcPage.mObjects[srcIndiceChave];
-		dstNode.mNumChaves++;
+			Pagina dstPage, int indiceChaveMediana) {
+		dstPage.mChaves[indiceChaveMediana] = srcPage.mChaves[srcIndiceChave];
+		dstPage.mObjects[indiceChaveMediana] = srcPage.mObjects[srcIndiceChave];
+		dstPage.mNumChaves++;
 
 		srcPage.remove(srcIndiceChave, indiceFilho);
 
 		if (srcPage == mPaginaRaiz && srcPage.mNumChaves == 0) {
-			mPaginaRaiz = dstNode;
+			mPaginaRaiz = dstPage;
 		}
 	}
 
-	public Object search(int chave) {
-		return search(mPaginaRaiz, chave);
+	public Object procurarChave(int chave) {
+		return procurarChave(mPaginaRaiz, chave);
 	}
 
-	public Object search(Pagina page, int chave) {
+	public Object procurarChave(Pagina page, int chave) {
 		int i = 0;
 		while (i < page.mNumChaves && chave > page.mChaves[i]) {
 			i++;
@@ -383,15 +380,15 @@ public class B {
 		if (page.mEhPaginaFolha) {
 			return null;
 		} else {
-			return search(page.mPaginasFilhas[i], chave);
+			return procurarChave(page.mPaginasFilhas[i], chave);
 		}
 	}
 
-	public Object search2(int chave) {
-		return search2(mPaginaRaiz, chave);
+	public Object procurarChave2(int chave) {
+		return procurarChave2(mPaginaRaiz, chave);
 	}
 
-	public Object search2(Pagina page, int chave) {
+	public Object procurarChave2(Pagina page, int chave) {
 		while (page != null) {
 			int i = 0;
 			while (i < page.mNumChaves && chave > page.mChaves[i]) {
@@ -451,7 +448,7 @@ public class B {
 		return printBTree(mPaginaRaiz);
 	}
 
-	void validacao() throws Exception {
+	void arvoreBValida() throws Exception {
 		ArrayList<Integer> array = getChaves(mPaginaRaiz);
 		for (int i = 0; i < array.size() - 1; i++) {
 			if (array.get(i) >= array.get(i + 1)) {
