@@ -11,15 +11,15 @@ public class Tests {
             bTree.inserir(7, "7");
             bTree.inserir(8, "8");              
             System.out.println(bTree.toString());
-            System.out.println(bTree.search(3));
-            System.out.println(bTree.search2(8));
-            bTree.delete(8);
+            System.out.println(bTree.procurarChave(3));
+            System.out.println(bTree.procurarChave2(8));
+            bTree.remover(8);
             System.out.println(bTree.toString());
-            bTree.delete(5);
+            bTree.remover(5);
             System.out.println(bTree.toString());
             bTree.inserir(5, "5");
             System.out.println(bTree.toString());
-            bTree.delete(5);
+            bTree.remover(5);
     }
     
     public static void test2(B bTree) throws Exception {
@@ -31,24 +31,24 @@ public class Tests {
             }
             for (int i = 0; i < primeNumbers.length; i++) {
                     String value = String.valueOf(primeNumbers[i]);
-                    Object searchResult = (Object) bTree.search(primeNumbers[i]);                   
+                    Object searchResult = (Object) bTree.procurarChave(primeNumbers[i]);                   
                     if (!value.equals(searchResult)) {
                             System.out.println("Oops: Key " + primeNumbers[i] + " retrieved object " + searchResult);
                     }
             }
             
-            bTree.delete(17);
-            bTree.validacao();
-            bTree.delete(42);
-            bTree.validacao();
-            bTree.delete(131);
-            bTree.validacao();
-            bTree.delete(5);
-            bTree.validacao();
+            bTree.remover(17);
+            bTree.arvoreBValida();
+            bTree.remover(42);
+            bTree.arvoreBValida();
+            bTree.remover(131);
+            bTree.arvoreBValida();
+            bTree.remover(5);
+            bTree.arvoreBValida();
             
             for (int i = 77; i >= 0; i--) {                 
-                    bTree.delete(i);                        
-                    bTree.validacao();                       
+                    bTree.remover(i);                        
+                    bTree.arvoreBValida();                       
             }
             
             for (int i = 0; i < primeNumbers.length; i++) {
@@ -56,15 +56,15 @@ public class Tests {
             }               
             for (int i = 0; i < primeNumbers.length; i++) {
                     String value = String.valueOf(primeNumbers[i]);
-                    Object searchResult = (Object) bTree.search(primeNumbers[i]);                   
+                    Object searchResult = (Object) bTree.procurarChave(primeNumbers[i]);                   
                     if (!value.equals(searchResult)) {
                             System.out.println("Oops: Key " + primeNumbers[i] + " retrieved object " + searchResult);
                     }
             }
             
             for (int i = primeNumbers.length - 1; i >= 0; i--) {                    
-                    bTree.delete(primeNumbers[i]);                  
-                    bTree.validacao();                       
+                    bTree.remover(primeNumbers[i]);                  
+                    bTree.arvoreBValida();                       
             }
     }
     
@@ -73,17 +73,17 @@ public class Tests {
                     bTree.inserir(i, String.valueOf(i));
             }
             
-            System.out.println(bTree.search(777));
-            bTree.delete(777);
-            bTree.validacao();
+            System.out.println(bTree.procurarChave(777));
+            bTree.remover(777);
+            bTree.arvoreBValida();
             System.out.println(bTree.toString());
-            bTree.delete(511);
-            bTree.validacao();
+            bTree.remover(511);
+            bTree.arvoreBValida();
             System.out.println(bTree.toString());
             
             for (int i = 1000; i >= 0; i--) {
-                    bTree.delete(i);                        
-                    bTree.validacao();                       
+                    bTree.remover(i);                        
+                    bTree.arvoreBValida();                       
             }
     }
     
