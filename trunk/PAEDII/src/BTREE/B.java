@@ -139,7 +139,7 @@ public class B {
 			newPage.mObjects[j] = page.mObjects[j + D];
 		}
 		if (!newPage.mEhPaginaFolha) {
-			for (int j = 0; j < D; j++) { // copia os últimos T pointeirs de
+			for (int j = 0; j < D; j++) { // copia os últimos T ponteiros de
 				// page
 				// em newPage.
 				newPage.mPaginasFilhas[j] = page.mPaginasFilhas[j + D];
